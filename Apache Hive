@@ -1,24 +1,21 @@
-sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1 --target-dir /increamental/append
-
-
-INSERT INTO test.customer1 VALUES(106,'John',25,'US');
-INSERT INTO test.customer1 VALUES(107,'Jack',35,'US');
-INSERT INTO test.customer1 VALUES(108,'Peter',28,'UK');
-INSERT INTO test.customer1 VALUES(109,'Katie',30,'US');
-INSERT INTO test.customer1 VALUES(110,'Daniel',22,'UK');
-INSERT INTO test.customer1 VALUES(111,'John',25,'US');
-INSERT INTO test.customer1 VALUES(112,'Jack',35,'US');
-INSERT INTO test.customer1 VALUES(113,'Peter',28,'UK');
-INSERT INTO test.customer1 VALUES(114,'Katie',30,'US');
-INSERT INTO test.customer1 VALUES(115,'Daniel',22,'UK');
-
-sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1 --incremental append --check-column cust_id --last-value 105 --target-dir /increamental/append
-=======================================================================
 Apache Hive 
 CREATE TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
-LOAD DATA INPATH '/student/StudentData.csv' INTO TABLE employee;
-
+lod the data from HDFS Location
+LOAD DATA INPATH '/input/StudentData.csv' INTO TABLE employee;
+* hive will move the data to the default location
+* if you drop the table the data will not be avaliable
+lod the data from local location
+LOAD DATA Local INPATH '/home/ubh01/Desktop/StudentData.csv' INTO TABLE employee;
+* it wont move the data to the default location while loading
+it will keep the local file system file as one local copy
+ 
+Skip Header
 CREATE TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' tblproperties("skip.header.line.count"="1");
 LOAD DATA INPATH '/student/StudentData.csv' INTO TABLE employee;
 
-
+Internal Table
+CREATE TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' tblproperties("skip.header.line.count"="1");
+LOAD DATA INPATH '/student/StudentData.csv' INTO TABLE employee;
+External Table
+CREATE external TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' tblproperties("skip.header.line.count"="1");
+LOAD DATA INPATH '/student/StudentData.csv' INTO TABLE employee;

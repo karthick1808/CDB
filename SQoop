@@ -1,0 +1,43 @@
+text
+SequenceFiles
+Avro 
+Parquet
+
+INSERT INTO test.customer1 VALUES(101,'John',25,'US');
+INSERT INTO test.customer1 VALUES(102,'Jack',35,'US');
+INSERT INTO test.customer1 VALUES(103,'Peter',28,'UK');
+INSERT INTO test.customer1 VALUES(104,'Katie',30,'US');
+INSERT INTO test.customer1 VALUES(105,'Daniel',22,'UK');
+
+table with primary key
+Without target directory
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1
+with target directory
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1 --target-dir /etl/input/
+with primary key and where clause
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1 --where "country = 'US'" --target-dir /etl/us/
+
+table without primary key
+Without target directory
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer --target-dir /etl/wp -m1
+
+File formats
+text -> --as-textfile
+SequenceFiles
+Avro 
+Parquet
+
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer --target-dir /etl/wp3/ --as-parquetfile -m 1
+
+
+Apache Hive
+sqoop import --connect jdbc:mysql://localhost/test --username root --password password --table customer1 --hive-import
+
+pending
+query
+hive
+increamental import
+hbase
+
+export
+sqoop export --connect jdbc:mysql://localhost/test --username root --password password --table customer_new --export-dir /etl/input/part* -m 1

@@ -1,4 +1,3 @@
-
 Apache Hive 
 CREATE TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 lod the data from HDFS Location
@@ -21,6 +20,10 @@ External Table
 CREATE external TABLE employee(age int,gender string,name string,course string,roll int,marks int,email string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' tblproperties("skip.header.line.count"="1");
 LOAD DATA INPATH '/student/StudentData.csv' INTO TABLE employee;
 
+load the data via insert command
+CREATE TABLE newemployee(age int,gender string,name string,course string,roll int,marks int,email string);
+insert into newemployee select * from employee;
+
 Partitioning
 The partitioning in Hive means dividing the table into some parts based on the values of a particular column like date, course, city or country. The advantage of partitioning is that since the data is stored in slices, the query response time becomes faster.
 2 types of partitioning 
@@ -39,7 +42,10 @@ CREATE TABLE staticemployee(age int,gender string,name string,roll int,marks int
 # while during the insertion you should not mention select * 
 insert into table staticemployee partition (course='Cloud')  select age,gender,name,roll,marks,email from employee where course='Cloud';
 
-
-
-
-
+Dynamic Partition
+#Create Table
+CREATE TABLE dynamicemployee(age int,gender string,name string,roll int,marks int,email string) partitioned by (course string);
+#set hive configuration
+set hive.exec.dynamic.partition.mode=nonstrict;
+# while during the insertion you should not mention select * 
+insert into table dynamicemployee partition (course)  select age,gender,name,roll,marks,email,course from employee where course='Cloud';
